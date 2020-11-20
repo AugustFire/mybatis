@@ -40,6 +40,7 @@ public class Plugin implements InvocationHandler {
     this.signatureMap = signatureMap;
   }
 
+  //生成代理对象进行装饰
   public static Object wrap(Object target, Interceptor interceptor) {
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
     Class<?> type = target.getClass();
@@ -58,6 +59,7 @@ public class Plugin implements InvocationHandler {
     try {
       Set<Method> methods = signatureMap.get(method.getDeclaringClass());
       if (methods != null && methods.contains(method)) {
+        //调用interceptor执行具体逻辑
         return interceptor.intercept(new Invocation(target, method, args));
       }
       return method.invoke(target, args);

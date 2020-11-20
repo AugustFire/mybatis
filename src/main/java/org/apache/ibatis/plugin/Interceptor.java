@@ -22,8 +22,10 @@ import java.util.Properties;
  */
 public interface Interceptor {
 
+  //对目标对象的目标方法进行代理
   Object intercept(Invocation invocation) throws Throwable;
 
+  //对拦截目标增强
   default Object plugin(Object target) {
     return Plugin.wrap(target, this);
   }

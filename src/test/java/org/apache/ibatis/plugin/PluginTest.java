@@ -39,7 +39,7 @@ class PluginTest {
   }
 
   @Intercepts({
-      @Signature(type = Map.class, method = "get", args = {Object.class})})
+      @Signature(type = Map.class, method = "get", args = {Object.class})}) //对Map.class的'get'方法进行拦截
   public static class AlwaysMapPlugin implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) {
