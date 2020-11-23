@@ -109,7 +109,7 @@ public class Configuration {
   protected boolean multipleResultSetsEnabled = true;
   protected boolean useGeneratedKeys;
   protected boolean useColumnLabel = true;
-  protected boolean cacheEnabled = true;
+  protected boolean cacheEnabled = true;  //二级缓存全局开关(默认开启)
   protected boolean callSettersOnNulls;
   protected boolean useActualParamName = true;
   protected boolean returnInstanceForEmptyRow;
@@ -676,8 +676,10 @@ public class Configuration {
       executor = new SimpleExecutor(this, transaction);
     }
     if (cacheEnabled) {
+      //使用装饰器增强(增加二级缓存功能)
       executor = new CachingExecutor(executor);
     }
+    //使用插件链层层包装执行器
     executor = (Executor) interceptorChain.pluginAll(executor);
     return executor;
   }

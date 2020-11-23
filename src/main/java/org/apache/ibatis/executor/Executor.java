@@ -62,6 +62,7 @@ public interface Executor {
 
   boolean isClosed();
 
+  //设置目标对象的包装对象
   void setExecutorWrapper(Executor executor);
 
 }
