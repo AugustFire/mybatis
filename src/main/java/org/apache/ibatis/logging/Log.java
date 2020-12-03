@@ -16,6 +16,8 @@
 package org.apache.ibatis.logging;
 
 /**
+ * mybatis使用的日志接口
+ *
  * @author Clinton Begin
  */
 public interface Log {

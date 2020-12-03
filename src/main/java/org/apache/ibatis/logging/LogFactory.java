@@ -18,6 +18,8 @@ package org.apache.ibatis.logging;
 import java.lang.reflect.Constructor;
 
 /**
+ * 日志工厂
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -31,12 +33,12 @@ public final class LogFactory {
   private static Constructor<? extends Log> logConstructor;
 
   static {
-    tryImplementation(LogFactory::useSlf4jLogging);
+    tryImplementation(LogFactory::useSlf4jLogging);//SLF4有限
     tryImplementation(LogFactory::useCommonsLogging);
     tryImplementation(LogFactory::useLog4J2Logging);
     tryImplementation(LogFactory::useLog4JLogging);
     tryImplementation(LogFactory::useJdkLogging);
-    tryImplementation(LogFactory::useNoLogging);
+    tryImplementation(LogFactory::useNoLogging); //NO_LOGGING兜底
   }
 
   private LogFactory() {
@@ -47,9 +49,10 @@ public final class LogFactory {
     return getLog(clazz.getName());
   }
 
+  //获取LOG的工厂方法
   public static Log getLog(String logger) {
     try {
-      return logConstructor.newInstance(logger);
+      return logConstructor.newInstance(logger);//反射获取
     } catch (Throwable t) {
       throw new LogException("Error creating logger for logger " + logger + ".  Cause: " + t, t);
     }
@@ -87,16 +90,18 @@ public final class LogFactory {
     setImplementation(org.apache.ibatis.logging.nologging.NoLoggingImpl.class);
   }
 
+  //尝试获取日志的构造器
   private static void tryImplementation(Runnable runnable) {
     if (logConstructor == null) {
       try {
-        runnable.run();
+        runnable.run();//注意是run()串行,不是new Thread(()->()).start
       } catch (Throwable t) {
         // ignore
       }
     }
   }
 
+  //获取class的构造器
   private static void setImplementation(Class<? extends Log> implClass) {
     try {
       Constructor<? extends Log> candidate = implClass.getConstructor(String.class);

@@ -22,6 +22,7 @@ import org.slf4j.Marker;
 import org.slf4j.spi.LocationAwareLogger;
 
 /**
+ * 具体实现
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -32,6 +33,7 @@ public class Slf4jImpl implements Log {
   public Slf4jImpl(String clazz) {
     Logger logger = LoggerFactory.getLogger(clazz);
 
+    //兼容slf4j日志版本
     if (logger instanceof LocationAwareLogger) {
       try {
         // check for slf4j >= 1.6 method signature

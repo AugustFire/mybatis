@@ -45,11 +45,13 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
   public Object invoke(Object proxy, Method method, Object[] params)
       throws Throwable {
     try {
-      if (Object.class.equals(method.getDeclaringClass())) {
+      if (Object.class.equals(method.getDeclaringClass())) { //继承object的方法不做任何增强
         return method.invoke(this, params);
       }
+      //如果是java.sql.Connection.prepareStatement(..)
       if ("prepareStatement".equals(method.getName()) || "prepareCall".equals(method.getName())) {
         if (isDebugEnabled()) {
+          //打印sql日志
           debug(" Preparing: " + removeExtraWhitespace((String) params[0]), true);
         }
         PreparedStatement stmt = (PreparedStatement) method.invoke(connection, params);
