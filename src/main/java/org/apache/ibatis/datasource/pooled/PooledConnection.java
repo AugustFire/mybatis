@@ -242,7 +242,7 @@ class PooledConnection implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
-    if (CLOSE.equals(methodName)) {
+    if (CLOSE.equals(methodName)) {   //代理connection.close()
       dataSource.pushConnection(this);
       return null;
     }
@@ -250,8 +250,9 @@ class PooledConnection implements InvocationHandler {
       if (!Object.class.equals(method.getDeclaringClass())) {
         // issue #579 toString() should never fail
         // throw an SQLException instead of a Runtime
-        checkConnection();
+        checkConnection(); //检查状态
       }
+      //不做处理,直接执行原对象的方法
       return method.invoke(realConnection, args);
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);

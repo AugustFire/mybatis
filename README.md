@@ -27,6 +27,7 @@
 - xxxLogger(statementLoger,ResultSetLoger...)
 - methodProxy
 - plugin
+- xxDatasource.connection
 ## 2.4 包装模式
 - cacheWrapper
 ## 2.5 适配器模式
